@@ -1,0 +1,67 @@
+version: "3.8"
+services:
+    followdb:
+      image: postgre
+    commentdb:
+      image: postgre
+    conservationdb:
+      image: mongo
+    messagedb: 
+      image: mcr.microsoft.com/mssql/server:2019-latest
+    postdb:
+      image: mcr.microsoft.com/mssql/server:2019-latest
+    userdb:
+      image: mcr.microsoft.com/mssql/server:2019-latest
+    authdb: 
+      image: mcr.microsoft.com/mssql/server:2019-latest
+    rabitmq:
+      image: rabbitmq:3.8.14-management
+    follow.api:
+      image: follow_api_image
+      build:
+       context: .
+       dockerfile: Services/SocialMicroservic.Services.Follow/Follow.WebAPI/Dockerfile
+    comment.api:
+      image: comment_api_image
+      build:
+       context: .
+       dockerfile: Services/SocialMicroservic.Services.Comment/Comment.WebAPI/Dockerfile
+    conservation.api:
+      image: conservation_api_image
+      build:
+       context: .
+       dockerfile: Services/SocialMicroservic.Services.Conservation/Conservation.WebAPI/Dockerfile
+    post.api:
+      image: post_api_image
+      build:
+       context: .
+       dockerfile: Services/SocialMicroservic.Services.Post/Post.WebAPI/Dockerfile
+    message.api:
+      image: message_api_image
+      build:
+       context: .
+       dockerfile: Services/SocialMicroservic.Services.Message/Message.WebAPI/Dockerfile
+    user.api:
+      image: message_api_image
+      build:
+       context: .
+       dockerfile: Services/SocialMicroservic.Services.User/User.WebAPI/Dockerfile
+    
+
+
+volumes:
+  followdb_volume:
+  commentdb_volume:
+  authdb_volume:
+  conservationdb_volume:
+  postdb_volume:
+  messagedb_volume:
+  userdb_volume:
+ 
+      
+
+
+    
+    
+    
+  

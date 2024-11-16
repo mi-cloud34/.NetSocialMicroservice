@@ -1,0 +1,6 @@
+@SocialMicroservice.Services.Conservation.API_HostAddress = http://localhost:5186
+
+GET {{SocialMicroservice.Services.Conservation.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

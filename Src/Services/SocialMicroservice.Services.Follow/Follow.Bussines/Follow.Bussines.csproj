@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SocialMicroservice.Services.User\Core\Core.csproj" />
+    <ProjectReference Include="..\Follow.DataAcess\Follow.DataAcess.csproj" />
+    <ProjectReference Include="..\Follow.Entities\Follow.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,9 @@
+
+Gateway=>5000,
+Auth=>Mssql,Normal,5001,entity,1433
+User=>Mssql,Klasik,5007,entity,
+Post=>Mssql,Union,5006,entity,1434
+Comment=>Postge,Normal,5002,dapper,4532
+Conservation=>Mongo,Normal,5003,27017
+Follow=>Postgre,Normal,5004,dapper,27018
+Message=>Postge,Union,5005,entity,SignalR,5433

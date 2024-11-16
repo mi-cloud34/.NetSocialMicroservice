@@ -1,0 +1,6 @@
+@Conservation.WepAPI_HostAddress = http://localhost:5198
+
+GET {{Conservation.WepAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

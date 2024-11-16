@@ -1,0 +1,164 @@
+version: "3.8"
+services:
+    followdb:
+      container_name: followdb
+      restart: always
+      ports:
+       - :"5432":"5432"
+      volumes:
+        - followdb_volume:/var/lib/postgresql/data
+      environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Password12*
+      - POSTGRES_DB=followdb
+    commentdb:
+      container_name: commentdb
+      restart: always
+      ports:
+       - :"5432":"5432"
+      volumes:
+        - followdb_volume:/var/lib/postgresql/data
+      environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=commentdb
+    conservationdb:
+      container_name: conversationdb
+      restart: always
+      ports:
+       - "27017:27017"
+      volumes:
+       - conservationdb_volume:/data/db
+    messagedb: 
+      container_name: messagedb
+      restart: always
+      ports:
+       - :"5432":"5432"
+      volumes:
+        - followdb_volume:/var/lib/postgresql/data
+      environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=messagedb
+    postdb:
+      container_name: postdb
+      restart: always
+      ports:
+        - "1433:1433"
+      volumes:
+      - postdb_volume:/var/opt/mssql
+      environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=
+    userdb:
+      container_name: userdb
+      restart: always
+      ports:
+      - "1433:1433"
+      volumes:
+      - userdb_volume:/var/opt/mssql
+      environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=
+    authdb: 
+      container_name: authdb
+      restart: always
+      ports:
+       - "1433:1433"
+      volumes:
+      - identitydb_volume:/var/opt/mssql
+      environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=
+    rabitmq: 
+      container_name: rabbitmq
+      restart: always
+      ports:
+       - "5672:5672"
+       - "15672:15672"
+   
+    follow.api:
+     container_name: follow.api
+     environment:
+       - ASPNETCORE_ENVIRONMENT=Development
+       - "ConnectionStrings:PostgreSql=User ID=; Password=; Server=; Port=5432;Database=;Integrated Security=true;Pooling=true"
+     ports:
+      - "5004:80"
+     depends_on:
+      - followdb
+    auth.api:
+     container_name: auth.api
+     restart: on-failure
+     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:DefaultConnection=Server=identitydb,1433;Database=; User=sa; Password="
+     ports:
+      - "5001:80"
+     depends_on:
+      - auhtdb
+    comment.api:
+     container_name: comment.api
+     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:PostgreSql=User ID=; Password=; Server=; Port=5432;Database=;Integrated Security=true;Pooling=true"
+     ports:
+      - "5002:80"
+     depends_on:
+      - commentdb
+    conservation.api:
+     container_name: conservation.api
+     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      
+      - DatabaseSettings:ConnectionString=mongodb://conservationdb:27017
+     ports:
+      - "5003:80"
+     depends_on:
+      - conservationdb
+     
+    post.api:
+     container_name: post.api
+     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      
+      - "ConnectionStrings:PostgreSql=User ID=admin; Password=; Server=; Port=5432;Database=;Integrated Security=true;Pooling=true"
+     ports:
+      - "5006:80"
+     depends_on:
+      - postdb
+    message.api:
+     container_name: message.api
+     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      
+      - RabbitMQUrl=rabbitmq
+      - "ConnectionStrings:PostgreSql=User ID=admin; Password=; Server=; Port=5432;Database=;Integrated Security=true;Pooling=true"
+     depends_on:
+      - messagedb
+    user.api:
+     container_name: user.api
+     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      
+      - RabbitMQUrl=rabbitmq
+      - "ConnectionStrings:DefaultConnection=Server=,1433;Database=; User=sa; Password="
+     depends_on:
+      - userdb
+     ports:
+      - "5007:80"
+    
+     
+    gateway.api:
+     container_name: gateway.api
+     environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      
+     ports:
+      - "5000:80"
+  
+    
+    
+      
+    
+    
+  
